@@ -1,0 +1,8 @@
+<h2>Xóa tài khoản</h2>
+<p>Bạn có chắc muốn xóa tài khoản? Hành động này không thể hoàn tác.</p>
+
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Xác nhận xóa tài khoản</button>
+  <a href="{% url 'user_profile' %}">Hủy</a>
+</form>

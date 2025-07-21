@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .seller-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 80px;
+    font-family: Arial, sans-serif;
+  }
+  .seller-left {
+    width: 50%;
+  }
+  .seller-left h1 {
+    color: #ee4d2d;
+    font-size: 30px;
+  }
+  .seller-left p {
+    color: #555;
+    font-size: 16px;
+  }
+  .seller-right {
+    width: 40%;
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+  .login-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  .btn-login, .btn-register {
+    background-color: #ee4d2d;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  .social-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  .social-buttons a {
+    flex: 1;
+    text-align: center;
+    margin: 0 5px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+  }
+  .tab-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+  .tab-toggle button {
+    margin: 0 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .tab-toggle .active {
+    border-color: #ee4d2d;
+    color: #ee4d2d;
+  }
+  .form-footer {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+  }
+</style>
+
+<div class="seller-container">
+  <div class="seller-left">
+    <img src="{% static 'images/banner3.png' %}" alt="Bán hàng" width="800">
+  </div>
+
+  <div class="seller-right">
+    <div class="tab-toggle">
+      <button id="btnLogin" class="active" onclick="toggleForm('login')">Đăng nhập</button>
+      <button id="btnRegister" onclick="toggleForm('register')">Đăng ký</button>
+    </div>
+
+    <!-- Đăng nhập -->
+    <div id="loginForm">
+      <div class="login-title">Đăng nhập</div>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <input type="text" name="username" placeholder="Email/SĐT/Tên đăng nhập">
+        </div>
+        <div class="form-group">
+          <input type="password" name="password" placeholder="Mật khẩu">
+        </div>
+        <button class="btn-login" type="submit">ĐĂNG NHẬP</button>
+      </form>
+      <p style="margin-top: 10px;"><a href="#">Quên mật khẩu?</a></p>
+      <div class="form-footer">
+        Hoặc đăng nhập bằng
+      </div>
+      <div class="social-buttons">
+        <a href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+      </div>
+    </div>
+
+    <!-- Đăng ký -->
+    <div id="registerForm" style="display: none;">
+      <div class="login-title">Đăng ký</div>
+      <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <input type="text" name="username" placeholder="Tên đăng nhập">
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Email">
+        </div>
+        <div class="form-group">
+          <input type="password" name="password1" placeholder="Mật khẩu">
+        </div>
+        <div class="form-group">
+          <input type="password" name="password2" placeholder="Nhập lại mật khẩu">
+        </div>
+        <button class="btn-register" type="submit">ĐĂNG KÝ</button>
+      </form>
+      <div class="form-footer">
+        Hoặc đăng ký bằng
+      </div>
+      <div class="social-buttons">
+        <a href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">Google</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleForm(type) {
+    const loginBtn = document.getElementById('btnLogin');
+    const registerBtn = document.getElementById('btnRegister');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    if (type === 'login') {
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+      loginBtn.classList.add('active');
+      registerBtn.classList.remove('active');
+    } else {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+      loginBtn.classList.remove('active');
+      registerBtn.classList.add('active');
+    }
+  }
+</script>
+
+{% endblock %}

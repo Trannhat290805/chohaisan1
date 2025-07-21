@@ -1,0 +1,130 @@
+{% load static %}
+
+
+<h1 style="margin-bottom: 20px; text-align: center; font-size: 28px; color: #333;">
+  <a href="/" style="text-decoration: none; color: inherit;">
+    🎉 TẤT CẢ SẢN PHẨM KHUYẾN MÃI
+  </a>
+</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    {% for product in products %}
+        <div style="
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            border-radius: 15px;
+            width: 220px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-color: #fff;
+        " onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 6px 12px rgba(0,0,0,0.15)';"
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.1)';">
+            
+            <!-- Link ảnh dẫn tới giỏ hàng -->
+            <a href="{% url 'cart' %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; border-radius: 10px;">
+            </a>
+
+            <!-- Form thêm sản phẩm khi bấm vào phần còn lại -->
+            <form action="{% url 'add_to_cart' product.id %}" method="post" style="margin-top: 10px;">
+                {% csrf_token %}
+                <button type="submit" style="all: unset; cursor: pointer; width: 100%; display: block;">
+                    <h3 style="font-size: 18px; color: #222; margin: 10px 0 5px;">{{ product.name }}</h3>
+                    <p style="color: #888; font-size: 14px; margin: 0;"><del>{{ product.old_price }}đ</del></p>
+                    <p style="color: #d32f2f; font-weight: bold; font-size: 16px; margin: 5px 0;">
+                        {{ product.price }}đ 
+                        <span style="color: #388e3c; font-size: 14px;">(-{{ product.discount_percent }}%)</span>
+                    </p>
+                    <p style="font-size: 13px; color: #555;">Đã bán: {{ product.sold }}</p>
+                </button>
+            </form>
+
+        </div>
+    {% empty %}
+        <p>Không có sản phẩm khuyến mãi nào.</p>
+    {% endfor %}
+</div>
+<footer style="background: #f5f5f5; padding: 40px 0; font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+  <div style="max-width: 1200px; margin: auto; padding: 0 20px;">
+
+    <h3 style="font-weight: bold; margin-bottom: 20px;">Đối tác của SHOPHAISAN</h3>
+    <div style="display: flex; flex-wrap: wrap; gap: 30px; align-items: center; margin-bottom: 40px;">
+      <img src={% static 'images/kingfood.png' %} alt="Kingfood" height="40">
+      <img src={% static 'images/lotte.png' %} alt="Lotte Mart" height="40">
+      <img src={% static 'images/aeon.png' %} alt="AEON" height="40">
+      <img src={% static 'images/Win.png' %} alt="WinMart" height="40">
+      <img src={% static 'images/grab.png' %} alt="GrabMart" height="40">
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 40px;">
+      <div>
+        <h4>THÔNG TIN</h4>
+        <p>Góc Ẩm Thực</p>
+        <p>Chính Sách / Ưu Đãi</p>
+        <p>Hệ Thống Cửa Hàng</p>
+        <p>Chương Trình KHTT</p>
+        <p>FeedBack</p>
+        <p>Tươi Sống Mỗi Ngày</p>
+      </div>
+      <div>
+        <h4>CHÍNH SÁCH</h4>
+        <p>Đăng Ký Đại Lý/CTV</p>
+        <p>Giao nhận hàng</p>
+        <p>Hướng dẫn đặt hàng</p>
+        <p>Chính sách đổi trả hàng</p>
+        <p>Chính Sách Giải quyết khiếu nại</p>
+        <p>Cam kết chất lượng</p>
+      </div>
+      <div>
+        <h4>GIỚI THIỆU</h4>
+        <p>Về ĐẢO HẢI SẢN</p>
+        <p>Chính sách & Quy Định Chung</p>
+        <p>Chính Sách Bảo Mật</p>
+        <p>Liên hệ</p>
+        <p><strong>TUYỂN DỤNG</strong></p>
+      </div>
+      <div>
+        <h4>SẢN PHẨM BÁN CHẠY</h4>
+        <p>Tôm</p>
+        <p>Cua, ghẹ</p>
+        <p>Cá</p>
+        <p>Mực</p>
+        <p>Ốc các loại</p>
+      </div>
+      <div>
+        <h4>KẾT NỐI VỚI CHÚNG TÔI</h4>
+        <div style="display: flex; gap: 10px;">
+          <img src={% static 'images/FB.png' %} height="24">
+          <img src={% static 'images/you.png' %} height="24">
+          <img src={% static 'images/zalo.png' %} height="24">
+          <img src={% static 'images/tiktok.png' %} height="24">
+          <img src={% static 'images/inter.png' %} height="24">
+        </div>
+        <br>
+        <button style="background: orange; border: none; padding: 8px 16px; color: white; border-radius: 4px; cursor: pointer;">Tuyển dụng</button>
+      </div>
+      <div>
+        <h4>PHƯƠNG THỨC THANH TOÁN</h4>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <img src={% static 'images/TT.png' %} height="32">
+          <img src={% static 'images/visa.png' %} height="32">
+          <img src={% static 'images/vnpay.png' %} height="32">
+          <img src={% static 'images/momo.png' %} height="32">
+          <img src={% static 'images/ATM.png' %} height="32">
+        </div>
+        <br>
+        <button style="background: orange; border: none; padding: 8px 16px; color: white; border-radius: 4px; cursor: pointer;">ĐĂNG KÝ ĐẠI LÝ/CTV</button>
+      </div>
+    </div>
+
+    <hr>
+    <div style="text-align: center; font-size: 13px; color: #555;">
+      <p><strong>Công ty TNHH SHOP HẢI SẢN</strong></p>
+      <p>VP: K16/05, Nguyễn Nhàn, P.Hòa Thọ Đông, Quận Cẩm Lê, TP.Đà Nẵng | ĐT: 0934.791.629 | Email: Minhthiet2908@gmail.com</p>
+      <p><strong>Mã số Doanh Nghiệp:</strong> 0313566925</p>
+      <p>CH1: 46 Đinh Tiên Hoàng, P.Tân An, TP.Hội An | CH2: 13 Chu Văn An, P.Cẩm Hà, Tp.Hội An | CH3: 17 Đinh Châu, P.Hòa Thọ Đông, Q.Cẩm Lệ, TP.Đà Nẵng</p>
+      <p><img src={% static 'images/OIP.png' %} height="32"></p>
+    </div>
+
+  </div>
+</footer>

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  /* Container chính */
+  .profile-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px 30px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 0.1);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .profile-container h2 {
+    margin-bottom: 20px;
+    color: #007acc;
+    border-bottom: 2px solid #007acc;
+    padding-bottom: 8px;
+  }
+
+  .profile-container h3 {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    color: #004a99;
+  }
+
+  .profile-container p {
+    line-height: 1.5;
+    font-size: 1.05rem;
+    margin: 6px 0;
+  }
+
+  .profile-container img {
+    display: block;
+    margin-top: 15px;
+    border-radius: 15px;
+    max-width: 150px;
+    box-shadow: 0 3px 8px rgb(0 0 0 / 0.15);
+  }
+
+  /* Link kiểu nút */
+  .profile-container a {
+    display: inline-block;
+    margin: 6px 10px 6px 0;
+    padding: 8px 14px;
+    background-color: #007acc;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  .profile-container a:hover {
+    background-color: #005ea3;
+  }
+
+  /* Responsive nhỏ */
+  @media (max-width: 480px) {
+    .profile-container {
+      padding: 15px 20px;
+    }
+    .profile-container a {
+      margin-bottom: 8px;
+      padding: 10px;
+      width: 100%;
+      text-align: center;
+    }
+    .profile-container img {
+      margin: 15px auto;
+      max-width: 120px;
+    }
+  }
+</style>
+
+<div class="profile-container">
+    <h2>🔹 Hồ sơ cá nhân</h2>
+    
+    <h3>1. Thông tin cá nhân cơ bản</h3>
+    <p><strong>Họ tên:</strong> {{ user.get_full_name }}</p>
+    <p><strong>Giới tính:</strong> {{ profile.gender }}</p>
+    <p><strong>Ngày sinh:</strong> {{ profile.birth_date }}</p>
+    <p><strong>Số điện thoại:</strong> {{ profile.phone }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Địa chỉ:</strong> {{ profile.address }}</p>
+
+    <h3>2. Thông tin tài khoản</h3>
+    <p><strong>Tên người dùng:</strong> {{ user.username }}</p>
+    <p><strong>Ngày tạo tài khoản:</strong> {{ user.date_joined }}</p>
+    <p><strong>Trạng thái:</strong> {% if user.is_active %}Đang hoạt động{% else %}Bị khóa{% endif %}</p>
+
+    <h3>3. Hành vi / lịch sử sử dụng</h3>
+    <a href="{% url 'order_history' %}">🔸 Xem lịch sử đơn hàng</a>
+
+    <h3>4. Chức năng chỉnh sửa</h3>
+    <a href="{% url 'edit_profile' %}">✏️ Cập nhật thông tin</a>
+    <a href="{% url 'change_password' %}">🔐 Đổi mật khẩu</a>
+    <a href="{% url 'delete_account' %}">🗑️ Xóa tài khoản</a>
+
+    <h3>5. Bảo mật và quyền riêng tư</h3>
+    <p>⚠️ Tính năng bảo mật nâng cao (2FA, thiết bị...) sẽ được thêm sau.</p>
+
+    {% if user.is_staff %}
+        <h3>6. Tùy chọn nâng cao (Admin)</h3>
+        <a href="/admin/">🛠️ Quản trị hệ thống</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Sản phẩm bạn đã đăng</h2>
+<ul>
+  {% for product in products %}
+    <li style="margin-bottom: 20px;">
+      <strong>{{ product.name }}</strong> - {{ product.price }}₫
+      <form method="POST" action="{% url 'delete_product' product.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm này?');" style="color: red;">Xóa</button>
+      </form>
+    </li>
+  {% empty %}
+    <li>Bạn chưa đăng sản phẩm nào.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

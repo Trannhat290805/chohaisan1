@@ -1,0 +1,75 @@
+<div class="checkout-container">
+    <h2 class="checkout-title">Thanh Toán</h2>
+
+    <form method="post" action="{% url 'dat_hang' %}">
+        {% csrf_token %}
+
+        <!-- Địa chỉ giao hàng -->
+        <div class="checkout-box">
+            <div class="toggle-header" onclick="toggleAddress()">
+                <h4>📍 Địa chỉ nhận hàng</h4>
+                <span class="toggle-arrow" id="arrow">&#9654;</span>
+            </div>
+            <div id="addressSection" class="toggle-body">
+                <input type="text" name="full_name" value="{{ user.full_name }}" placeholder="Họ và tên" required class="checkout-input">
+                <input type="text" name="phone_number" value="{{ user.phone_number }}" placeholder="Số điện thoại" required class="checkout-input">
+                <textarea name="address" placeholder="Nhập địa chỉ nhận hàng" required class="checkout-textarea">{{ user.address }}</textarea>
+            </div>
+        </div>
+
+        <!-- Sản phẩm -->
+        <div class="checkout-box">
+            <h4>🛒 Sản phẩm</h4>
+            <div class="checkout-product">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div class="checkout-product-info">
+                    <strong>{{ product.name }}</strong><br>
+                    SL: 1
+                </div>
+                <div class="checkout-price">{{ product.price|floatformat:0 }} đ</div>
+            </div>
+        </div>
+
+        <!-- Phương thức thanh toán -->
+        <div class="checkout-box">
+            <h4>💳 Phương thức thanh toán</h4>
+            <select name="payment_method" class="checkout-input">
+                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                <option value="Bank">Chuyển khoản ngân hàng</option>
+                <option value="Wallet">Ví điện tử ShopeePay</option>
+            </select>
+        </div>
+
+        <!-- Tổng tiền -->
+        <div class="checkout-box">
+            <h4>Tổng thanh toán</h4>
+            <p class="checkout-total">{{ total_price|floatformat:0 }} đ</p>
+        </div>
+
+        <!-- Nút Đặt Hàng -->
+        <div class="checkout-center">
+            <button type="submit" class="checkout-button">Đặt Hàng</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    let isAddressOpen = false;
+    function toggleAddress() {
+        const section = document.getElementById("addressSection");
+        const arrow = document.getElementById("arrow");
+        isAddressOpen = !isAddressOpen;
+
+        if (isAddressOpen) {
+            section.style.display = "block";
+            arrow.classList.add("rotate");
+        } else {
+            section.style.display = "none";
+            arrow.classList.remove("rotate");
+        }
+    }
+
+    document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("addressSection").style.display = "block";
+    });
+</script>

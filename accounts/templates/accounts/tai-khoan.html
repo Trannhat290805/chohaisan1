@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align:center; margin-top: 50px;">
+    <h1>Điểm Danh Hàng Ngày</h1>
+    <p style="color: green;">{{ message }}</p>
+    <p>Chuỗi ngày liên tiếp: <strong>{{ profile.check_in_streak }}</strong> ngày</p>
+    <p>Ví Xu hiện tại: <strong style="color: orange;">{{ profile.xu }} Xu</strong></p>
+    <a href="{% url 'home' %}" style="padding: 10px 20px; background: #00bcd4; color: white; border-radius: 10px; text-decoration: none;">Quay lại trang chủ</a>
+</div>
+{% endblock %}

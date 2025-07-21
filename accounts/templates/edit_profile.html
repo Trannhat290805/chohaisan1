@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Cập nhật thông tin cá nhân</h2>
+
+<form method="post" action="">
+  {% csrf_token %}
+
+  <label for="full_name">Họ tên:</label><br>
+  <input type="text" id="full_name" name="full_name" value="{{ full_name }}"><br><br>
+
+  <label for="gender">Giới tính:</label><br>
+  <select id="gender" name="gender">
+    <option value="" {% if not profile.gender %}selected{% endif %}>Chọn giới tính</option>
+    <option value="Nam" {% if profile.gender == "Nam" %}selected{% endif %}>Nam</option>
+    <option value="Nữ" {% if profile.gender == "Nữ" %}selected{% endif %}>Nữ</option>
+    <option value="Khác" {% if profile.gender == "Khác" %}selected{% endif %}>Khác</option>
+  </select><br><br>
+
+  <label for="birth_date">Ngày sinh:</label><br>
+  <input type="date" id="birth_date" name="birth_date" value="{{ profile.birth_date }}"><br><br>
+
+  <label for="phone">Số điện thoại:</label><br>
+  <input type="text" id="phone" name="phone" value="{{ profile.phone }}"><br><br>
+
+  <label for="email">Email:</label><br>
+  <input type="email" id="email" name="email" value="{{ user.email }}"><br><br>
+
+  <label for="address">Địa chỉ:</label><br>
+  <textarea id="address" name="address" rows="3">{{ profile.address }}</textarea><br><br>
+
+  <button type="submit">Lưu thay đổi</button>
+  <a href="{% url 'user_profile' %}">Hủy</a>
+</form>
+
+{% endblock %}

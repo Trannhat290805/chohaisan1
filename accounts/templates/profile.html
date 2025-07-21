@@ -1,0 +1,16 @@
+<!-- profile.html -->
+{% extends "base.html" %}
+{% block content %}
+<h2>Hồ sơ cá nhân</h2>
+
+<p><strong>Họ tên:</strong> {{ user.get_full_name }}</p>
+<p><strong>Giới tính:</strong> {{ profile.gender|default:"Chưa cập nhật" }}</p>
+<p><strong>Ngày sinh:</strong> {{ profile.birth_date|date:"d/m/Y"|default:"Chưa cập nhật" }}</p>
+<p><strong>Số điện thoại:</strong> {{ profile.phone|default:"Chưa cập nhật" }}</p>
+<p><strong>Email:</strong> {{ user.email }}</p>
+<p><strong>Địa chỉ:</strong> {{ profile.address|default:"Chưa cập nhật" }}</p>
+
+<img src="{{ profile.avatar.url }}" alt="Avatar" width="150">
+
+<p><a href="{% url 'edit_profile' %}">Cập nhật thông tin</a></p>
+{% endblock %}

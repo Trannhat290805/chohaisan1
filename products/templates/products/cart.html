@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+.cart-container {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    font-family: Arial;
+}
+
+.cart-left {
+    flex: 3;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.cart-right {
+    flex: 1.5;
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.cart-table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.cart-table th, .cart-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-table img {
+    width: 80px;
+    border-radius: 4px;
+}
+
+.cart-total {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+    margin-top: 20px;
+}
+
+.checkout-button {
+    background-color: #ee4d2d;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 100%;
+}
+.checkout-input,
+.checkout-textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+</style>
+
+<div class="cart-container">
+
+    <!-- Giỏ hàng bên trái -->
+    <div class="cart-left">
+        <h2>🛒 Giỏ hàng</h2>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Ảnh</th>
+                    <th>Tên</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td><img src="{{ item.product.image.url }}"></td>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.price|floatformat:0 }}₫</td>
+                    <td>
+                        <form method="post" action="{% url 'update_cart' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit" name="action" value="decrease">➖</button>
+                            {{ item.quantity }}
+                            <button type="submit" name="action" value="increase">➕</button>
+                        </form>
+                    </td>
+                    <td>{{ item.total_price|floatformat:0 }}₫</td>
+                    <td>
+                        <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                            {% csrf_token %}
+                            <button type="submit">🗑️</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Phần thanh toán bên phải -->
+    <div class="cart-right">
+        <h3>Thanh toán</h3>
+        <form method="post" action="{% url 'dat_hang' %}">
+            {% csrf_token %}
+            <input type="text" name="full_name" value="{{ user.full_name }}" placeholder="Họ và tên" class="checkout-input" required>
+            <input type="text" name="phone_number" value="{{ user.phone_number }}" placeholder="Số điện thoại" class="checkout-input" required>
+            <textarea name="address" placeholder="Địa chỉ giao hàng" class="checkout-textarea" required>{{ user.address }}</textarea>
+
+            <label for="payment_method">Phương thức thanh toán:</label>
+            <select name="payment_method" class="checkout-input">
+                <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+                <option value="Bank">Chuyển khoản ngân hàng</option>
+                <option value="Wallet">Ví Điện Tử Momo</option>
+            </select>
+
+            <div class="cart-total">Tổng: {{ total_price|floatformat:0 }}₫</div>
+
+            <button type="submit" class="checkout-button">Đặt Hàng</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
